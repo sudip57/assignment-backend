@@ -19,11 +19,7 @@ async function seedProducts() {
     for (let i = 0; i < TOTAL_PRODUCTS; i += BATCH_SIZE) {
       const products = [];
 
-      for (
-        let j = i;
-        j < Math.min(i + BATCH_SIZE, TOTAL_PRODUCTS);
-        j++
-      ) {
+      for (let j = i; j < Math.min(i + BATCH_SIZE, TOTAL_PRODUCTS);j++) {
         products.push({
           name: `Product ${j + 1}`,
           category:
