@@ -10,7 +10,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
 app.use("/products",browseProduct)
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.redirect("/products");
 })
 
 app.listen(port, () => {
