@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Products</title>
+
+    <style>
+
+        body{
+            font-family:Arial, sans-serif;
+            margin:30px;
+            background:#f5f5f5;
+        }
+
+        h1{
+            margin-bottom:20px;
+        }
+
+        .toolbar{
+            margin-bottom:20px;
+            display:flex;
+            gap:15px;
+            align-items:center;
+        }
+
+        select{
+            padding:8px 12px;
+            border:1px solid #ccc;
+            border-radius:4px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+        }
+
+        th{
+            background:#222;
+            color:white;
+            padding:12px;
+        }
+
+        td{
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+        tr:hover{
+            background:#f1f1f1;
+        }
+
+        .pagination{
+            margin-top:20px;
+        }
+
+        .btn{
+            display:inline-block;
+            padding:10px 20px;
+            background:#222;
+            color:white;
+            text-decoration:none;
+            border-radius:4px;
+        }
+
+        .btn:hover{
+            opacity:0.9;
+        }
+
+        .empty{
+            text-align:center;
+            padding:20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Products</h1>
+
+    <div class="toolbar">
+
+        <label>
+            Filter Category:
+        </label>
+
+        <select
+            onchange="
+                if(this.value === ''){
+                    window.location.href='/products';
+                }else{
+                    window.location.href='/products/category/' + this.value;
+                }
+            "
+        >
+            <option value=""
+                <%= !currentCategory ? 'selected' : '' %>>
+                All Products
+            </option>
+
+            <option value="electronics"
+                <%= currentCategory === 'electronics' ? 'selected' : '' %>>
+                Electronics
+            </option>
+
+            <option value="mobile"
+                <%= currentCategory === 'mobile' ? 'selected' : '' %>>
+                Mobile
+            </option>
+
+            <option value="fashion"
+                <%= currentCategory === 'fashion' ? 'selected' : '' %>>
+                Fashion
+            </option>
+
+            <option value="books"
+                <%= currentCategory === 'books' ? 'selected' : '' %>>
+                Books
+            </option>
+
+            <option value="home"
+                <%= currentCategory === 'home' ? 'selected' : '' %>>
+                Home
+            </option>
+
+            <option value="sports"
+                <%= currentCategory === 'sports' ? 'selected' : '' %>>
+                Sports
+            </option>
+
+            <option value="beauty"
+                <%= currentCategory === 'beauty' ? 'selected' : '' %>>
+                Beauty
+            </option>
+
+            <option value="toys"
+                <%= currentCategory === 'toys' ? 'selected' : '' %>>
+                Toys
+            </option>
+
+        </select>
+
+    </div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <% if(products.length === 0){ %>
+
+                <tr>
+                    <td colspan="5" class="empty">
+                        No Products Found
+                    </td>
+                </tr>
+
+            <% } %>
+
+            <% products.forEach(product => { %>
+
+                <tr>
+
+                    <td>
+                        <%= product.productId || product._id %>
+                    </td>
+
+                    <td>
+                        <%= product.name %>
+                    </td>
+
+                    <td>
+                        <%= product.category %>
+                    </td>
+
+                    <td>
+                        ₹<%= product.price %>
+                    </td>
+
+                    <td>
+                        <%= new Date(product.createdAt).toLocaleString() %>
+                    </td>
+
+                </tr>
+
+            <% }) %>
+
+        </tbody>
+
+    </table>
+
+    <div class="pagination">
+
+        <% if(hasMore){ %>
+
+            <% if(currentCategory){ %>
+
+                <a
+                    class="btn"
+                    href="/products/category/<%= currentCategory %>?cursor=<%= nextCursor %>"
+                >
+                    Next Products →
+                </a>
+
+            <% } else { %>
+
+                <a
+                    class="btn"
+                    href="/products?cursor=<%= nextCursor %>"
+                >
+                    Next Products →
+                </a>
+
+            <% } %>
+
+        <% } else { %>
+
+            <p>No more products.</p>
+
+        <% } %>
+
+    </div>
+
+</body>
+
+</html>
